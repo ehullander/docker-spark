@@ -69,7 +69,7 @@ http://localhost:8080/
 
 Start a driver node by running
 ``` 
-docker run -it --name spark-submit --network spark-net -p 4040:4040 spark-submit:1.0 bash
+docker run -it --name spark-submit --network spark-net -p 4040:4040 -p 8888:8888 spark-submit:1.0 jupyter notebook --ip 0.0.0.0 --allow-root --NotebookApp.token=''
 ```
 
 You can now either submit files to spark using 
