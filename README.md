@@ -34,13 +34,18 @@ of Spark.
 
 To get started, pull the following three docker images
 ```
-docker pull sdesilva26/spark_master:latest
-docker pull sdesilva26/spark_worker:latest
-docker pull sdesilva26/spark_submit:latest
+# On workers and manager
+git pull ehullander/docker-spark 
+masterPC: docker build -f Dockerfile_master --tag spark-master:1.0 .
+masterPC: docker build -f Dockerfile_submit --tag spark-submit:1.0 .
+workerPC: docker build -f Dockerfile_worker --tag spark-worker:1.0 .
 ```
-Create a docker swarm using
+Create a docker swarm using  
+
+try ifconfig and the last ip address is the host, not br or docker
+
 ``` 
-docker swarm init
+docker swarm init --advertise-addr <your-host-ip, e.g. 10.0.0.115>  
 ```
 then attach the other machines you wish to be in the cluster to the docker swarm by copying and
 pasting the output from the above command.
@@ -51,21 +56,20 @@ docker network create -d overlay --attachable spark-net
 ```
 On the machine you wish to be the master node of the Spark cluster run
 ``` 
-docker run -it --name spark-master --network spark-net -p 8080:8080 sdeislva26/spark_master
-:latest
+docker run -it --name spark-master --network spark-net -p 8080:8080 spark-master:1.0
 ```
 On the machines you wish to be workers run
 ``` 
-docker run -it --name spark-worker1 --network spark-net -p 8081:8081 -e MEMORY=6G -e
-     CORES=3 sdesilva26/spark_worker:latest
+docker run -it --name spark-worker1 --network spark-net -p 8081:8081 -e MEMORY=6G -e CORES=3 spark-worker:1.0
 ```
 substituting the values for CORES and MEMORY to be cores of the machine - 1 and RAM of machine
 - 1GB.
 
+http://localhost:8080/  
+
 Start a driver node by running
 ``` 
-docker run -it --name spark-submit --network spark-net -p 4040:4040 sdesilva26/spark_submit
-:latest bash
+docker run -it --name spark-submit --network spark-net -p 4040:4040 spark-submit:1.0 bash
 ```
 
 You can now either submit files to spark using 
@@ -77,37 +81,4 @@ or run a pyspark shell
 ``` 
 $SPARK_HOME/bin/pyspark
 ```
-NOTE: by default the sdesilva26/spark_submit and sdesilva26/spark_worker images will try to
- connect to the cluster manager at spark://spark-master:7077 so if you change the name of the
-  container running the sdesilva26/spark_master image then you must pass this change as follows
 
-``` 
-docker run -it --name spark-submit --network spark-net -p 4040:4040 -e MASTER_CONTAINER_NAME
-=<your-master-container-name> sdesilva26/spark_submit
-:latest bash
-```
-
-for the submit node and
-
-``` 
-docker run -it --name spark-worker1 --network spark-net -p 8081:8081 -e MEMORY=6G -e
-     CORES=3 -e MASTER_CONTAINER_NAME=<your-master-container-name> sdesilva26/spark_worker:latest
-```
-for thw worker node.
-
-These instructions allow you to manually set up a Apache Spark cluster running inside docker
- containers located on different machines. For a full walk-through including explanations and
-  a docker-compose version of setting up a cluster see the [TUTORIAL.md](TUTORIAL.md)
-
-
-## Authors
-
-* Shane de Silva
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
-
-## Acknowledgments
-
-* [Marco Villarreal's](https://github.com/mvillarrealb/) docker images for the starting point for my own docker images 
