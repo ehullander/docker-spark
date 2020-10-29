@@ -1,6 +1,6 @@
 # Docker-Spark-Tutorial
 
-You will need to set up multiple machines with a cloud provider such as AWS or Azure, or local
+You will need to set up multiple machines with a cloud provider such as AWS or Azure, or local.
 
 ***
 ## Apache Spark
