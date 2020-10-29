@@ -11,12 +11,12 @@ The examples/ directory contains some example python scripts and jupyter noteboo
 of Spark.
 
 ## passwordless ssh on master and workers  
-`
+```
 $ ssh-keygen -t rsa  
 $ ssh <user>@<worker_ip.local> mkdir -p .ssh  
 $ cat .ssh/id_rsa.pub | <user>@<worker_ip.local> 'cat >> .ssh/authorized_keys'  
 $ ssh <user>@<worker_ip.local> "chmod 700 .ssh; chmod 640 .ssh/authorized_keys"  
-`
+```
 
 ## Getting Started
 
