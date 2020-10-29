@@ -1,34 +1,22 @@
 # Docker-Spark-Tutorial
-This repo is intended to be a walkthrough in how to set up a Spark cluster running inside Docker containers. 
 
-I assume some familiarity with Spark and Docker and their basic commands such as build and run. Everything else will be explained in this file.
-
-We will build up the complexity to eventually a full architecture of a Spark cluster running inside of Docker containers in a 
-sequential fashion so as to hopefully build the understanding. 
-
-***
-## Tutorial
-A full walk through on how to create a Spark cluster running on separate machines inside Docker
-containers is container within the [TUTORIAL.md](TUTORIAL.md). The file builds up the complexity
-in a sequential fashion so as to help the understanding of the user. It starts off by
-demonstrating simple docker container networking, moves to setting up a Spark cluster on a
-local machine, and then finally combining the two locally and in a distributed fashion.
-
-#### Prerequisites
-
-I assume knowledge of basic Docker commands such as run, build, etc.
-
-You will need to set up multiple machines with a cloud provider such as AWS or Azure.
+You will need to set up multiple machines with a cloud provider such as AWS or Azure, or local
 
 ***
 ## Apache Spark
-The APACHESPARKTUNING.md explains the main terms involved in a Spark cluster such as worker node, master node, executor,
-task, job, etc. The second section of this file describes some rough rules to use when setting the
-parameters of your cluster to get optimal performance with some demonstrations.
+
 ***
 ## Examples
 The examples/ directory contains some example python scripts and jupyter notebooks for demonstrating various aspects of 
 of Spark.
+
+## passwordless ssh on master and workers  
+`
+$ ssh-keygen -t rsa  
+$ ssh <user>@<worker_ip.local> mkdir -p .ssh  
+$ cat .ssh/id_rsa.pub | <user>@<worker_ip.local> 'cat >> .ssh/authorized_keys'  
+$ ssh <user>@<worker_ip.local> "chmod 700 .ssh; chmod 640 .ssh/authorized_keys"  
+`
 
 ## Getting Started
 
